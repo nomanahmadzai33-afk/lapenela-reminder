@@ -2,6 +2,7 @@ import os
 import json
 import base64
 from datetime import datetime, timedelta
+from dateutil import parser as dateparser
 import pytz
 import gspread
 from google.oauth2 import service_account
@@ -34,7 +35,7 @@ def get_tomorrows_reservations():
         sheet = gc.open("La Penela Reservations").sheet1
         records = sheet.get_all_records()
         madrid_tz = pytz.timezone('Europe/Madrid')
-        tomorrow = (datetime.now(madrid_tz) + timedelta(days=1)).strftime("%Y-%m-%d")
+        tomorrow = (datetime.now(madrid_tz) + timedelta(days=1)).date()
         results = []
         for r in records:
             if tomorrow in str(r.get('Date', '')) or r.get('Date', '') == tomorrow:
