@@ -1,0 +1,5 @@
+[variables]
+NIXPACKS_NO_CACHE = "1"
+
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
