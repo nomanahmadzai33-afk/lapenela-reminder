@@ -48,14 +48,18 @@ def get_tomorrows_reservations():
 def make_reminder_call(phone, name, guests, date, time_str):
     try:
         client = Client(TWILIO_SID, TWILIO_TOKEN)
+        webhook_url = f"https://web-production-03008.up.railway.app/confirm-reservation?phone={phone}&name={name}"
         twiml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Say language="es-ES" voice="Polly.Conchita">
-        Hola {name}, le llamamos de La Penela Moraleja para confirmar su reserva de mañana.
-        Tiene una mesa para {guests} personas a las {time_str}.
-        Si necesita cancelar o modificar, llámenos al 9 1 6, 5 0 5, 2 3 2.
-        ¡Hasta mañana!
-    </Say>
+    <Gather numDigits="1" action="{webhook_url}" method="POST">
+        <Say language="es-ES" voice="Polly.Conchita">
+            Hola {name}, le llamamos de La Penela Moraleja para confirmar su reserva de mañana.
+            Tiene una mesa para {guests} personas a las {time_str}.
+            Pulse 1 para confirmar su reserva.
+            Pulse 2 para cancelar.
+        </Say>
+    </Gather>
+    <Say language="es-ES" voice="Polly.Conchita">No hemos recibido respuesta. Por favor llámenos al 9 1 6, 5 0 5, 2 3 2.</Say>
 </Response>"""
         call = client.calls.create(
             twiml=twiml,
