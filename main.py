@@ -35,7 +35,7 @@ def get_tomorrows_reservations():
         sheet = gc.open("La Penela Reservations").sheet1
         records = sheet.get_all_records()
         madrid_tz = pytz.timezone('Europe/Madrid')
-        tomorrow = (datetime.now(madrid_tz) + timedelta(days=1)).date()
+        tomorrow = (datetime.now(madrid_tz) + timedelta(days=1)).strftime("%d-%m-%Y")
         results = []
         for r in records:
             if tomorrow in str(r.get('Date', '')) or r.get('Date', '') == tomorrow:
