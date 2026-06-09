@@ -74,7 +74,7 @@ def make_reminder_call(phone, name, guests, date, time_str):
         webhook_url = f"https://web-production-03008.up.railway.app/confirm-reservation?phone={quote(phone_clean)}&name={quote(str(name))}"
         twiml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Gather numDigits="1" action="{webhook_url}" method="POST" timeout="10">
+    <Gather numDigits="1" action="https://web-production-03008.up.railway.app/confirm-reservation" method="POST" timeout="10">
         <Say language="es-ES" voice="Polly.Conchita">
             Hola {name}, le llamamos de La Penela Moraleja para confirmar su reserva de manana.
             Tiene una mesa para {guests} personas a las {time_str}.
