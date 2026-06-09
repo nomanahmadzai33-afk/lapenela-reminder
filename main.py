@@ -48,7 +48,8 @@ def get_tomorrows_reservations():
 def make_reminder_call(phone, name, guests, date, time_str):
     try:
         client = Client(TWILIO_SID, TWILIO_TOKEN)
-        webhook_url = f"https://web-production-03008.up.railway.app/confirm-reservation?phone={phone}&name={name}"
+        from urllib.parse import quote
+        webhook_url = f"https://web-production-03008.up.railway.app/confirm-reservation?phone={quote(str(phone))}&name={quote(str(name))}"
         twiml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Gather numDigits="1" action="{webhook_url}" method="POST">
