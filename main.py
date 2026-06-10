@@ -68,9 +68,14 @@ def get_tomorrows_reservations():
 def make_reminder_call(phone, name, guests, date, time_str):
     try:
         client = Client(TWILIO_SID, TWILIO_TOKEN)
-        phone_clean = str(phone).strip()
+        phone_clean = str(phone).strip().replace(' ', '').replace('-', '')
         if not phone_clean.startswith('+'):
-            phone_clean = '+' + phone_clean
+            if phone_clean.startswith('00'):
+                phone_clean = '+' + phone_clean[2:]
+            elif len(phone_clean) == 9 and phone_clean[0] in '679':
+                phone_clean = '+34' + phone_clean
+            else:
+                phone_clean = '+' + phone_clean
         webhook_url = f"https://web-production-03008.up.railway.app/confirm-reservation?phone={quote(phone_clean)}&name={quote(str(name))}"
         twiml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <Response>
